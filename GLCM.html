@@ -1,0 +1,1004 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Ekstraksi Fitur Warna dan GLCM &#8212; Pengolahan Citra Digital</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Pengolahan Citra Digital</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks.html">
+   Content with notebooks
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/sayyidi11/webmining/master?urlpath=tree/docs/GLCM.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/sayyidi11/webmining/blob/master/docs/GLCM.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/sayyidi11/webmining"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/sayyidi11/webmining/issues/new?title=Issue%20on%20page%20%2FGLCM.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/GLCM.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Ekstraksi Fitur Warna dan GLCM</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="ekstraksi-fitur-warna-dan-glcm">
+<h1>Ekstraksi Fitur Warna dan GLCM<a class="headerlink" href="#ekstraksi-fitur-warna-dan-glcm" title="Permalink to this headline">#</a></h1>
+<p>import library yang akan digunakan</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">google.colab.patches</span> <span class="kn">import</span> <span class="n">cv2_imshow</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
+<span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/drive&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">KeyboardInterrupt</span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">d5df0069828e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/drive&#39;</span><span class="p">)</span>
+
+<span class="nn">/usr/local/lib/python3.8/dist-packages/google/colab/drive.py</span> in <span class="ni">mount</span><span class="nt">(mountpoint, force_remount, timeout_ms, readonly)</span>
+<span class="g g-Whitespace">     </span><span class="mi">99</span> <span class="k">def</span> <span class="nf">mount</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">,</span> <span class="n">force_remount</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="o">=</span><span class="mi">120000</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">100</span>   <span class="sd">&quot;&quot;&quot;Mount your Google Drive at the specified mountpoint path.&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">101</span>   <span class="k">return</span> <span class="n">_mount</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">102</span>       <span class="n">mountpoint</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">103</span>       <span class="n">force_remount</span><span class="o">=</span><span class="n">force_remount</span><span class="p">,</span>
+
+<span class="nn">/usr/local/lib/python3.8/dist-packages/google/colab/drive.py</span> in <span class="ni">_mount</span><span class="nt">(mountpoint, force_remount, timeout_ms, ephemeral, readonly)</span>
+<span class="g g-Whitespace">    </span><span class="mi">122</span>       <span class="s1">&#39;TBE_EPHEM_CREDS_ADDR&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">ephemeral</span> <span class="k">else</span> <span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TBE_CREDS_ADDR&#39;</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">123</span>   <span class="k">if</span> <span class="n">ephemeral</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">124</span>     <span class="n">_message</span><span class="o">.</span><span class="n">blocking_request</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">125</span>         <span class="s1">&#39;request_auth&#39;</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;authType&#39;</span><span class="p">:</span> <span class="s1">&#39;dfs_ephemeral&#39;</span><span class="p">},</span> <span class="n">timeout_sec</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">126</span> 
+
+<span class="nn">/usr/local/lib/python3.8/dist-packages/google/colab/_message.py</span> in <span class="ni">blocking_request</span><span class="nt">(request_type, request, timeout_sec, parent)</span>
+<span class="g g-Whitespace">    </span><span class="mi">169</span>   <span class="n">request_id</span> <span class="o">=</span> <span class="n">send_request</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">170</span>       <span class="n">request_type</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">expect_reply</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">171</span>   <span class="k">return</span> <span class="n">read_reply_from_input</span><span class="p">(</span><span class="n">request_id</span><span class="p">,</span> <span class="n">timeout_sec</span><span class="p">)</span>
+
+<span class="nn">/usr/local/lib/python3.8/dist-packages/google/colab/_message.py</span> in <span class="ni">read_reply_from_input</span><span class="nt">(message_id, timeout_sec)</span>
+<span class="g g-Whitespace">     </span><span class="mi">95</span>     <span class="n">reply</span> <span class="o">=</span> <span class="n">_read_next_input_message</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span>     <span class="k">if</span> <span class="n">reply</span> <span class="o">==</span> <span class="n">_NOT_READY</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">97</span>       <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.025</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span>       <span class="k">continue</span>
+<span class="g g-Whitespace">     </span><span class="mi">99</span>     <span class="k">if</span> <span class="p">(</span><span class="n">reply</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;colab_reply&#39;</span> <span class="ow">and</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Siapkan file gamabr yang akan diolah, kemudian resize gambar agar proses lebih ringan.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;/content/drive/MyDrive/Daun Sehat/IMG_20220903_103536_1.jpg&#39;</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="p">,(</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Konveri RGB ==&gt; CMYK</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">/</span><span class="mf">255.</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">K</span><span class="p">)</span> <span class="c1">#(1-R-K)/(1-k)</span>
+<span class="n">M</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">K</span><span class="p">)</span> <span class="c1"># (1-G-K)/(1-k)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">K</span><span class="p">)</span> <span class="c1">#(1-B-K)/(1-k)</span>
+<span class="n">CMYK_image</span><span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="n">C</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">K</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv2_imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GLCM_8_0.png" src="_images/GLCM_8_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv2_imshow</span><span class="p">(</span><span class="n">CMYK_image</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GLCM_9_0.png" src="_images/GLCM_9_0.png" />
+</div>
+</div>
+<p>Konveri RGB ==&gt; ycbcr</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cbcr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="c1">#membuat array unitialized yang ukurannya sama dengan image</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Y</span>
+<span class="n">cbcr</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">.</span><span class="mi">299</span> <span class="o">*</span> <span class="n">r</span> <span class="o">+</span> <span class="o">.</span><span class="mi">587</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="o">.</span><span class="mi">114</span> <span class="o">*</span> <span class="n">b</span>
+<span class="c1"># Cb</span>
+<span class="n">cbcr</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">128</span> <span class="o">-</span> <span class="o">.</span><span class="mi">169</span> <span class="o">*</span> <span class="n">r</span> <span class="o">-</span> <span class="o">.</span><span class="mi">331</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">b</span>
+<span class="c1"># Cr</span>
+<span class="n">cbcr</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">128</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">r</span> <span class="o">-</span> <span class="o">.</span><span class="mi">419</span> <span class="o">*</span> <span class="n">g</span> <span class="o">-</span> <span class="o">.</span><span class="mi">081</span> <span class="o">*</span> <span class="n">b</span>
+
+<span class="n">hasil_ycbcr</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">cbcr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv2_imshow</span><span class="p">(</span><span class="n">hasil_ycbcr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/GLCM_12_0.png" src="_images/GLCM_12_0.png" />
+</div>
+</div>
+<p>Fuction Konversi RGB ==&gt; BGR</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rgb</span><span class="p">(</span><span class="n">image_file</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+  <span class="k">global</span> <span class="n">B</span>
+  <span class="k">global</span> <span class="n">G</span>
+  <span class="k">global</span> <span class="n">R</span>
+  <span class="n">B</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">R</span> <span class="o">=</span> <span class="n">image_file</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span>
+  <span class="k">return</span> <span class="n">B</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">R</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Fuction Konversi RGB ==&gt; CMYK</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cmyk</span><span class="p">(</span><span class="n">image_file</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+  <span class="k">global</span> <span class="n">C</span>
+  <span class="k">global</span> <span class="n">M</span>
+  <span class="k">global</span> <span class="n">Y</span>
+  <span class="k">global</span> <span class="n">K</span>
+  <span class="n">img</span> <span class="o">=</span> <span class="n">image_file</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">/</span><span class="mf">255.</span>
+  <span class="n">K</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">K</span><span class="p">)</span> <span class="c1">#(1-R-K)/(1-k)</span>
+  <span class="n">M</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">K</span><span class="p">)</span> <span class="c1"># (1-G-K)/(1-k)</span>
+  <span class="n">Y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">K</span><span class="p">)</span> <span class="c1">#(1-B-K)/(1-k)</span>
+
+  <span class="n">CMYK_image</span><span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="n">C</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">K</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+  <span class="n">C</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">K</span> <span class="o">=</span> <span class="n">CMYK_image</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span>
+  <span class="k">return</span> <span class="n">C</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">K</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Fuction Konversi RGB ==&gt; YCbCr</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ycbcr</span><span class="p">(</span><span class="n">image_file</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+  <span class="k">global</span> <span class="n">Y</span>
+  <span class="k">global</span> <span class="n">Cb</span>
+  <span class="k">global</span> <span class="n">Cr</span>
+
+  <span class="n">cbcr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">image_file</span><span class="p">)</span> <span class="c1">#membuat array unitialized yang ukurannya sama dengan image</span>
+
+  <span class="n">r</span> <span class="o">=</span> <span class="n">image_file</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">g</span> <span class="o">=</span> <span class="n">image_file</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="n">image_file</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span>
+  
+  <span class="c1"># Y</span>
+  <span class="n">cbcr</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">.</span><span class="mi">299</span> <span class="o">*</span> <span class="n">r</span> <span class="o">+</span> <span class="o">.</span><span class="mi">587</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="o">.</span><span class="mi">114</span> <span class="o">*</span> <span class="n">b</span>
+  <span class="c1"># Cb</span>
+  <span class="n">cbcr</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">128</span> <span class="o">-</span> <span class="o">.</span><span class="mi">169</span> <span class="o">*</span> <span class="n">r</span> <span class="o">-</span> <span class="o">.</span><span class="mi">331</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">b</span>
+  <span class="c1"># Cr</span>
+  <span class="n">cbcr</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">128</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">r</span> <span class="o">-</span> <span class="o">.</span><span class="mi">419</span> <span class="o">*</span> <span class="n">g</span> <span class="o">-</span> <span class="o">.</span><span class="mi">081</span> <span class="o">*</span> <span class="n">b</span>
+
+  <span class="n">ycbcr_image</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">cbcr</span><span class="p">)</span>
+  <span class="n">Y</span><span class="p">,</span><span class="n">Cb</span><span class="p">,</span><span class="n">Cr</span> <span class="o">=</span> <span class="n">ycbcr_image</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span>
+  <span class="k">return</span> <span class="n">Y</span><span class="p">,</span><span class="n">Cb</span><span class="p">,</span><span class="n">Cr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Function GLCM</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.feature</span> <span class="kn">import</span> <span class="n">greycomatrix</span><span class="p">,</span> <span class="n">greycoprops</span>
+<span class="k">def</span> <span class="nf">calc_glcm_all_agls</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">props</span><span class="p">,</span> <span class="n">dists</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">agls</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">],</span> <span class="n">lvl</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">sym</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    
+    <span class="n">glcm</span> <span class="o">=</span> <span class="n">greycomatrix</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> 
+                        <span class="n">distances</span><span class="o">=</span><span class="n">dists</span><span class="p">,</span> 
+                        <span class="n">angles</span><span class="o">=</span><span class="n">agls</span><span class="p">,</span> 
+                        <span class="n">levels</span><span class="o">=</span><span class="n">lvl</span><span class="p">,</span>
+                        <span class="n">symmetric</span><span class="o">=</span><span class="n">sym</span><span class="p">,</span> 
+                        <span class="n">normed</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">feature</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">glcm_props</span> <span class="o">=</span> <span class="p">[</span><span class="n">propery</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">props</span> <span class="k">for</span> <span class="n">propery</span> <span class="ow">in</span> <span class="n">greycoprops</span><span class="p">(</span><span class="n">glcm</span><span class="p">,</span> <span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">glcm_props</span><span class="p">:</span>
+            <span class="n">feature</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="c1"># feature.append(label) </span>
+    
+    <span class="k">return</span> <span class="n">feature</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Data 1000 citra yang akan diolah</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">images_path</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;/content/drive/MyDrive/Daun Sehat/*.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imgs</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#list image matrix </span>
+<span class="c1"># labels = []</span>
+<span class="c1"># descs = []</span>
+
+<span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images_path</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>   
+    <span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>    
+    <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">gray</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">h</span><span class="o">//</span><span class="mi">3</span><span class="p">,</span> <span class="n">h</span><span class="o">*</span><span class="mi">2</span><span class="o">//</span><span class="mi">3</span><span class="p">,</span> <span class="n">w</span><span class="o">//</span><span class="mi">3</span><span class="p">,</span> <span class="n">w</span><span class="o">*</span><span class="mi">2</span><span class="o">//</span><span class="mi">3</span>
+    <span class="n">crop</span> <span class="o">=</span> <span class="n">gray</span><span class="p">[</span><span class="n">ymin</span><span class="p">:</span><span class="n">ymax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">:</span><span class="n">xmax</span><span class="p">]</span>       
+    <span class="n">resize</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">crop</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">fx</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+            
+    <span class="n">imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resize</span><span class="p">)</span>
+    <span class="c1"># labels.append(normalize_label(os.path.splitext(filename)[0]))</span>
+    <span class="c1"># descs.append(normalize_desc(folder, sub_folder))</span>
+            
+            <span class="c1"># print_progress(i, len_sub_folder, folder, sub_folder, filename)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dissimilarity&#39;</span><span class="p">,</span> <span class="s1">&#39;correlation&#39;</span><span class="p">,</span> <span class="s1">&#39;homogeneity&#39;</span><span class="p">,</span> <span class="s1">&#39;contrast&#39;</span><span class="p">,</span> <span class="s1">&#39;ASM&#39;</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">]</span>
+
+<span class="n">glcm_all_agls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">:</span> 
+    <span class="n">glcm_all_agls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">calc_glcm_all_agls</span><span class="p">(</span><span class="n">img</span><span class="p">,</span>   
+                                <span class="n">props</span><span class="o">=</span><span class="n">properties</span><span class="p">)</span>
+                            <span class="p">)</span>
+ 
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;45&#39;</span><span class="p">,</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span><span class="s1">&#39;135&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">properties</span> <span class="p">:</span>
+    <span class="k">for</span> <span class="n">ang</span> <span class="ow">in</span> <span class="n">angles</span><span class="p">:</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">ang</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="c1"># Create the pandas DataFrame for GLCM features data</span>
+<span class="n">glcm_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">glcm_all_agls</span><span class="p">,</span> 
+                      <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span>
+
+<span class="n">glcm_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-4f0f8fdb-88cb-4a8f-9d9c-0cb50db9faa8">
+    <div class="colab-df-container">
+      <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>dissimilarity_0</th>
+      <th>dissimilarity_45</th>
+      <th>dissimilarity_90</th>
+      <th>dissimilarity_135</th>
+      <th>correlation_0</th>
+      <th>correlation_45</th>
+      <th>correlation_90</th>
+      <th>correlation_135</th>
+      <th>homogeneity_0</th>
+      <th>homogeneity_45</th>
+      <th>...</th>
+      <th>contrast_90</th>
+      <th>contrast_135</th>
+      <th>ASM_0</th>
+      <th>ASM_45</th>
+      <th>ASM_90</th>
+      <th>ASM_135</th>
+      <th>energy_0</th>
+      <th>energy_45</th>
+      <th>energy_90</th>
+      <th>energy_135</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.997763</td>
+      <td>2.194891</td>
+      <td>1.808297</td>
+      <td>1.776773</td>
+      <td>0.990949</td>
+      <td>0.986506</td>
+      <td>0.992701</td>
+      <td>0.994676</td>
+      <td>0.522625</td>
+      <td>0.518820</td>
+      <td>...</td>
+      <td>16.403344</td>
+      <td>11.964829</td>
+      <td>0.008983</td>
+      <td>0.008874</td>
+      <td>0.009268</td>
+      <td>0.009112</td>
+      <td>0.094776</td>
+      <td>0.094202</td>
+      <td>0.096268</td>
+      <td>0.095455</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.626080</td>
+      <td>3.662115</td>
+      <td>3.796002</td>
+      <td>3.373602</td>
+      <td>0.989787</td>
+      <td>0.968802</td>
+      <td>0.969215</td>
+      <td>0.981664</td>
+      <td>0.381453</td>
+      <td>0.340519</td>
+      <td>...</td>
+      <td>61.290932</td>
+      <td>36.522342</td>
+      <td>0.002427</td>
+      <td>0.002209</td>
+      <td>0.002164</td>
+      <td>0.002161</td>
+      <td>0.049264</td>
+      <td>0.047000</td>
+      <td>0.046522</td>
+      <td>0.046484</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.693095</td>
+      <td>2.059000</td>
+      <td>1.850130</td>
+      <td>1.662637</td>
+      <td>0.992050</td>
+      <td>0.982639</td>
+      <td>0.986879</td>
+      <td>0.993240</td>
+      <td>0.547220</td>
+      <td>0.539432</td>
+      <td>...</td>
+      <td>24.892202</td>
+      <td>12.846104</td>
+      <td>0.012568</td>
+      <td>0.012506</td>
+      <td>0.012782</td>
+      <td>0.012475</td>
+      <td>0.112106</td>
+      <td>0.111828</td>
+      <td>0.113057</td>
+      <td>0.111693</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2.913229</td>
+      <td>3.845160</td>
+      <td>3.841522</td>
+      <td>3.662610</td>
+      <td>0.984392</td>
+      <td>0.960353</td>
+      <td>0.959781</td>
+      <td>0.971291</td>
+      <td>0.348564</td>
+      <td>0.301426</td>
+      <td>...</td>
+      <td>57.913890</td>
+      <td>41.368203</td>
+      <td>0.001753</td>
+      <td>0.001558</td>
+      <td>0.001578</td>
+      <td>0.001525</td>
+      <td>0.041863</td>
+      <td>0.039477</td>
+      <td>0.039723</td>
+      <td>0.039053</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3.374614</td>
+      <td>2.508732</td>
+      <td>2.612106</td>
+      <td>3.754544</td>
+      <td>0.980451</td>
+      <td>0.991017</td>
+      <td>0.990094</td>
+      <td>0.976024</td>
+      <td>0.353225</td>
+      <td>0.402314</td>
+      <td>...</td>
+      <td>18.894473</td>
+      <td>45.508341</td>
+      <td>0.002670</td>
+      <td>0.002878</td>
+      <td>0.002962</td>
+      <td>0.002550</td>
+      <td>0.051676</td>
+      <td>0.053650</td>
+      <td>0.054429</td>
+      <td>0.050500</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 24 columns</p>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-4f0f8fdb-88cb-4a8f-9d9c-0cb50db9faa8')"
+              title="Convert this dataframe to an interactive table."
+              style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M0 0h24v24H0V0z" fill="none"/>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"/><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"/>
+  </svg>
+      </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-4f0f8fdb-88cb-4a8f-9d9c-0cb50db9faa8 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-4f0f8fdb-88cb-4a8f-9d9c-0cb50db9faa8');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cd</span> /content/drive/MyDrive/Pengolahan_Citra
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/content/drive/MyDrive/Pengolahan_Citra
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># determining the name of the file</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;GLCM.xlsx&#39;</span>
+  
+<span class="c1"># saving the excel</span>
+<span class="n">glcm_df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;DataFrame is written to Excel File successfully.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame is written to Excel File successfully.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelWriter</span><span class="p">(</span><span class="s1">&#39;Hasil_warna.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#1000 image</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">img_ke</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">tabel_hasil</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">kolom</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Image&quot;</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span><span class="s2">&quot;K&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;Cb&quot;</span><span class="p">,</span> <span class="s2">&quot;Cr&quot;</span><span class="p">]</span>
+<span class="n">tabel_hasil</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kolom</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images_path</span><span class="p">:</span>
+  <span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+  <span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="p">,(</span><span class="mi">200</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>
+  <span class="n">rgb</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+  <span class="n">cmyk</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+  <span class="n">ycbcr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+  <span class="n">tabel_baris</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">img_ke</span><span class="p">,</span>
+      <span class="n">R</span><span class="p">,</span>
+      <span class="n">G</span><span class="p">,</span>
+      <span class="n">B</span><span class="p">,</span>
+      <span class="n">C</span><span class="p">,</span>
+      <span class="n">M</span><span class="p">,</span>
+      <span class="n">Y</span><span class="p">,</span>
+      <span class="n">K</span><span class="p">,</span>
+      <span class="n">Y</span><span class="p">,</span>
+      <span class="n">Cb</span><span class="p">,</span>
+      <span class="n">Cr</span>
+
+      
+  <span class="p">]</span>
+  <span class="n">index</span><span class="o">+=</span><span class="mi">1</span>
+  <span class="n">img_ke</span><span class="o">+=</span><span class="mi">1</span>
+  <span class="n">tabel_hasil</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tabel_baris</span><span class="p">)</span>
+
+<span class="n">tabel_hasil</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">tabel_hasil</span><span class="p">)</span>
+<span class="n">tabel_hasil</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;RGB-CMYK&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Sayyidi Makhdum<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
